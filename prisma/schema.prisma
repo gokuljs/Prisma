@@ -1,6 +1,9 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+//  this is the place where we model our data
+
+// where you define prisma client it supports js rust go etc
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,4 +11,20 @@ generator client {
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
+}
+
+// user model
+model User {
+  id       Int       @id @default(autoincrement())
+  email    String    @unique
+  name     String?
+  articles Article[]
+}
+
+model Article {
+  id       Int     @id @default(autoincrement())
+  title    String
+  body     String?
+  author   User    @relation(fields: [authorId], references: [id])
+  authorId Int
 }
